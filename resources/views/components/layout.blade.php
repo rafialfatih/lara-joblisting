@@ -37,7 +37,7 @@
 
   {{-- View --}}
   <main>
-    @yield('content')
+    {{ $slot }}
   </main>
 
   <footer 

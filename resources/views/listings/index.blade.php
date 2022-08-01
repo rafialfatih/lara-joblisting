@@ -11,4 +11,8 @@
     <p>No listing found</p>
   @endunless
   </div>
+
+  <div class="mt-6 p-6">
+    {{ $listings->links() }}
+  </div>
 </x-layout>

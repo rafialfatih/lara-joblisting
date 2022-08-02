@@ -31,7 +31,7 @@
           <span class="font-bold">Welcome, {{ auth()->user()->name }}!</span>
         </li>
         <li>
-          <a href="/login" class="hover:text-laravel"><i class="fa-solid fa-gear"></i>Manage Listings</a>
+          <a href="/listing/manage" class="hover:text-laravel"><i class="fa-solid fa-gear"></i> Manage Listings</a>
         </li>
         <li>
           <form method="POST" class="inline" action="/logout">
@@ -46,7 +46,7 @@
           <a href="/register" class="hover:text-laravel"><i class="fa-solid fa-user-plus"></i> Register</a>
         </li>
         <li>
-          <a href="/login" class="hover:text-laravel"><i class="fa-solid fa-arrow-right-to-bracket"></i>Login</a>
+          <a href="/login" class="hover:text-laravel"><i class="fa-solid fa-arrow-right-to-bracket"></i> Login</a>
         </li>
       @endauth
     </ul>

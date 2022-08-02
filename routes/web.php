@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\ListingController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\AuthenticateUserController;
+use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\Listing\ListingController;
+use App\Http\Controllers\Listing\ManageListingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,12 +17,39 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/register', [UserController::class, "create"]);
+// User authentication routes
+Route::middleware('guest')->group(function () {
+  // User registration routes
+  Route::controller(UserController::class)->group(function () {
+    Route::get('/register', 'create');
+    Route::post('/users', 'store');
+  });
 
-Route::get("/", [ListingController::class, "index"]);
-Route::get('/listing/create', [ListingController::class, "create"]);
-Route::post('/listing', [ListingController::class, "store"]);
-Route::get('/listing/edit/{listing}', [ListingController::class, "edit"]);
-Route::get('/listing/{listing}', [ListingController::class, "show"]);
-Route::put('/listing/{listing}', [ListingController::class, "update"]);
-Route::delete('/listing/{listing}', [ListingController::class, "destroy"]);
+  // Authentication / Login routes
+  Route::controller(AuthenticateUserController::class)->group(function () {
+    Route::get('/login', 'create')->name('login');
+    Route::post('/authenticate', 'store');
+  });
+});
+
+// Authenticated routes
+Route::middleware('auth')->group(function () {
+  Route::get('/listing/manage', [ManageListingController::class, 'index']);
+
+  // Listing management routes
+  Route::controller(ListingController::class)->group(function () {
+    Route::post('/listing', 'store');
+    Route::get('/listing/edit/{listing}', 'edit');
+    Route::put('/listing/{listing}', 'update');
+    Route::delete('/listing/{listing}', 'destroy');
+  });
+
+  Route::post('/logout', [AuthenticateUserController::class, 'destroy']);
+});
+
+// Guests routes
+Route::controller(ListingController::class)->group(function () {
+  Route::get('/', 'index');
+  Route::get('/listing/create', 'create');
+  Route::get('/listing/{listing}', 'show');
+});
